@@ -309,7 +309,7 @@ void menuStatus(void)
         OPEN_MENU(menuPrint);
         break;
 
-      case KEY_INFOBOX:
+      case KEY_TEMP:
               heatSetCurrentIndex(-1);  // set last used hotend index
         OPEN_MENU(menuHeat);
       default:
