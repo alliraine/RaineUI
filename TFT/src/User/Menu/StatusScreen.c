@@ -12,7 +12,7 @@
   #define SET_SPEEDMENUINDEX(x)
 #endif
 
-#define UPDATE_TOOL_TIME 2000  // 1 seconds is 1000
+#define UPDATE_TOOL_TIME 500  // 1 seconds is 1000
 
 // #ifdef PORTRAIT_MODE
 //   #define XYZ_STATUS "X:%.2f Y:%.2f Z:%.2f"
@@ -25,10 +25,10 @@ const MENUITEMS statusItems = {
   LABEL_READY,
   // icon                          label
   {
-    {ICON_EXTRUDE,           "Load/Unload"},
+    {ICON_EXTRUDE,           LABEL_LOAD_UNLOAD},
     {ICON_NULL,              LABEL_NULL},
-    {ICON_NULL,            LABEL_NULL},
-    {ICON_HEAT,              "Preheat"},
+    {ICON_NULL,              LABEL_NULL},
+    {ICON_HEAT,              LABEL_PREHEAT},
     #ifdef TFT70_V3_0
       {ICON_STATUS_FLOW,             LABEL_NULL},
       {ICON_MAINMENU,                LABEL_MAINMENU},
@@ -78,7 +78,7 @@ const GUI_POINT ss_val_point   = {SS_ICON_WIDTH / 2, SS_ICON_VAL_Y0};
 void drawStatus(void)
 {
   // icons and their values are updated one by one to reduce flicker/clipping
-  char tempstr[45];
+  // char tempstr[45];
 
   LIVE_INFO lvIcon;
   lvIcon.enabled[0] = true;
@@ -97,53 +97,53 @@ void drawStatus(void)
   lvIcon.lines[1].fn_color = SS_VAL_COLOR;
   lvIcon.lines[1].text_mode = GUI_TEXTMODE_TRANS;  // default value
 
-  #ifndef TFT70_V3_0
-    lvIcon.enabled[3] = false;
-  #else
-    lvIcon.enabled[3] = true;
-    lvIcon.lines[3].h_align = CENTER;
-    lvIcon.lines[3].v_align = CENTER;
-    lvIcon.lines[3].pos = ss_val_point_2;
-    lvIcon.lines[3].font = SS_ICON_VAL_FONT_SIZE_2;
-    lvIcon.lines[3].fn_color = SS_VAL_COLOR_2;
-    lvIcon.lines[3].text_mode = GUI_TEXTMODE_TRANS;  // default value
-  #endif
+  // #ifndef TFT70_V3_0
+  //   lvIcon.enabled[3] = false;
+  // #else
+  //   lvIcon.enabled[3] = true;
+  //   lvIcon.lines[3].h_align = CENTER;
+  //   lvIcon.lines[3].v_align = CENTER;
+  //   lvIcon.lines[3].pos = ss_val_point_2;
+  //   lvIcon.lines[3].font = SS_ICON_VAL_FONT_SIZE_2;
+  //   lvIcon.lines[3].fn_color = SS_VAL_COLOR_2;
+  //   lvIcon.lines[3].text_mode = GUI_TEXTMODE_TRANS;  // default value
+  // #endif
 
-  #ifdef TFT70_V3_0
-    char tempstr2[45];
+  // #ifdef TFT70_V3_0
+  //   char tempstr2[45];
 
-    // TOOL / EXT
-    lvIcon.iconIndex = ICON_STATUS_NOZZLE;
-    lvIcon.lines[0].text = (uint8_t *)heatShortID[currentTool];
-    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(currentTool));
-    sprintf(tempstr2, "%3d℃", heatGetTargetTemp(currentTool));
-    lvIcon.lines[1].text = (uint8_t *)tempstr;
-    lvIcon.lines[2].text = (uint8_t *)tempstr2;
-    showLiveInfo(0, &lvIcon, false);
+  //   // TOOL / EXT
+  //   lvIcon.iconIndex = ICON_STATUS_NOZZLE;
+  //   lvIcon.lines[0].text = (uint8_t *)heatShortID[currentTool];
+  //   sprintf(tempstr, "%3d℃", heatGetCurrentTemp(currentTool));
+  //   sprintf(tempstr2, "%3d℃", heatGetTargetTemp(currentTool));
+  //   lvIcon.lines[1].text = (uint8_t *)tempstr;
+  //   lvIcon.lines[2].text = (uint8_t *)tempstr2;
+  //   showLiveInfo(0, &lvIcon, false);
 
-    // BED / CHAMBER
-    lvIcon.iconIndex = bedIcons[currentBCIndex];
-    lvIcon.lines[0].text = (uint8_t *)heatShortID[BED + currentBCIndex];
-    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
-    sprintf(tempstr2, "%3d℃", heatGetTargetTemp(BED + currentBCIndex));
-    lvIcon.lines[1].text = (uint8_t *)tempstr;
-    lvIcon.lines[2].text = (uint8_t *)tempstr2;
-    showLiveInfo(1, &lvIcon, infoSettings.chamber_en == 1);
+  //   // BED / CHAMBER
+  //   lvIcon.iconIndex = bedIcons[currentBCIndex];
+  //   lvIcon.lines[0].text = (uint8_t *)heatShortID[BED + currentBCIndex];
+  //   sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
+  //   sprintf(tempstr2, "%3d℃", heatGetTargetTemp(BED + currentBCIndex));
+  //   lvIcon.lines[1].text = (uint8_t *)tempstr;
+  //   lvIcon.lines[2].text = (uint8_t *)tempstr2;
+  //   showLiveInfo(1, &lvIcon, infoSettings.chamber_en == 1);
 
-    lvIcon.enabled[1] = false;
-  #else
-    // TOOL / EXT
-    lvIcon.iconIndex = ICON_STATUS_NOZZLE;
-    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(currentTool));
-    lvIcon.lines[3].text = (uint8_t *)tempstr;
-    showLiveInfo(3, &lvIcon, false);
+  //   lvIcon.enabled[1] = false;
+  // #else
+  //   // TOOL / EXT
+  //   lvIcon.iconIndex = ICON_STATUS_NOZZLE;
+  //   sprintf(tempstr, "%3d℃", heatGetCurrentTemp(currentTool));
+  //   lvIcon.lines[0].text = (uint8_t *)tempstr;
+  //   showLiveInfo(0, &lvIcon, false);
 
-    // BED
-    lvIcon.iconIndex = bedIcons[currentBCIndex];
-    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
-    lvIcon.lines[3].text = (uint8_t *)tempstr;
-    showLiveInfo(3, &lvIcon, infoSettings.chamber_en == 1);
-  #endif
+  //   // BED
+  //   lvIcon.iconIndex = bedIcons[currentBCIndex];
+  //   sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
+  //   lvIcon.lines[0].text = (uint8_t *)tempstr;
+  //   showLiveInfo(0, &lvIcon, infoSettings.chamber_en == 1);
+  // #endif
 
   // // FAN
   // lvIcon.iconIndex = ICON_STATUS_FAN;
@@ -219,9 +219,19 @@ void statusScreen_setReady(void)
 
 void drawHomeTemp(void)
 {
+  GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+  char tempstr[45];
+  char tempstr2[45];
   IMAGE_ReadDisplay(rect_of_keySS[KEY_TEMP].x0, rect_of_keySS[KEY_TEMP].y0, HOME_TEMP_ADDR);
-
-
+  GUI_SetColor(infoSettings.status_xyz_bg_color);
+  sprintf(tempstr2, "%3d℃", heatGetCurrentTemp(currentTool));
+  sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
+  GUI_DispString(rect_of_keySS[KEY_TEMP].x0 + BYTE_HEIGHT + 90,
+                rect_of_keySS[KEY_TEMP].y0 + 15,
+                (uint8_t *)tempstr);
+  GUI_DispString(rect_of_keySS[KEY_TEMP].x0 + BYTE_HEIGHT + 90,
+                rect_of_keySS[KEY_TEMP].y0 + 55,
+                (uint8_t *)tempstr2);
 }
 void drawHomeLogo(void)
 {
@@ -260,6 +270,7 @@ static inline void toggleTool(void)
     // switch speed/flow
     // TOGGLE_BIT(currentSpeedID, 0);
     drawStatus();
+    drawHomeTemp();
 
     // gcode queries must be call after drawStatus
     coordinateQuery(MS_TO_SEC(UPDATE_TOOL_TIME));
