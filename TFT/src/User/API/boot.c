@@ -188,12 +188,42 @@ static inline bool updateIcon(char * rootDir)
     GUI_DispString(statUpdateRect.x0, statUpdateRect.y0, (uint8_t *)tempstr);
   }
 
-  GET_FULL_PATH(curBmpPath, rootDir, BMP_UPDATE_DIR "/InfoBox.bmp");
-  bmpState = bmpDecode(curBmpPath, INFOBOX_ADDR);
+  // GET_FULL_PATH(curBmpPath, rootDir, BMP_UPDATE_DIR "/InfoBox.bmp");
+  // bmpState = bmpDecode(curBmpPath, INFOBOX_ADDR);
+
+  // if (bmpState == BMP_SUCCESS)
+  // {
+  //   IMAGE_ReadDisplay(iconUpdateRect.x0, iconUpdateRect.y0, INFOBOX_ADDR);
+  //   found++;
+  // }
+  // else
+  // {
+  //   notfound++;
+  //   dispIconFail((uint8_t *)(curBmpPath), bmpState);
+  // }
+
+  //load home logo into memory
+  GET_FULL_PATH(curBmpPath, rootDir, BMP_UPDATE_DIR "/home_logo.bmp");
+  bmpState = bmpDecode(curBmpPath, HOME_LOGO_ADDR);
 
   if (bmpState == BMP_SUCCESS)
   {
-    IMAGE_ReadDisplay(iconUpdateRect.x0, iconUpdateRect.y0, INFOBOX_ADDR);
+    IMAGE_ReadDisplay(iconUpdateRect.x0, iconUpdateRect.y0, HOME_LOGO_ADDR);
+    found++;
+  }
+  else
+  {
+    notfound++;
+    dispIconFail((uint8_t *)(curBmpPath), bmpState);
+  }
+
+  //load home temp into memory
+  GET_FULL_PATH(curBmpPath, rootDir, BMP_UPDATE_DIR "/home_temp.bmp");
+  bmpState = bmpDecode(curBmpPath, HOME_TEMP_ADDR);
+
+  if (bmpState == BMP_SUCCESS)
+  {
+    IMAGE_ReadDisplay(iconUpdateRect.x0, iconUpdateRect.y0, HOME_TEMP_ADDR);
     found++;
   }
   else

@@ -14,7 +14,7 @@ extern "C" {
 #define ITEM_PER_PAGE     8
 #define PS_TOUCH_OFFSET   2                            // printing screen icon index offset for touch input
 #define MENU_RECT_COUNT   (ITEM_PER_PAGE * 2 + 1)      // 8 items + title bar
-#define SS_RECT_COUNT     (ITEM_PER_PAGE * 2 + 1 + 1)  // 8 items + title bar + infobox
+#define SS_RECT_COUNT     (ITEM_PER_PAGE * 2 + 1 + 1 + 1)  // 8 items + title bar + infobox + tempbox
 #define TM_RECT_COUNT     (ITEM_PER_PAGE * 2 + 1 + 1)  // 8 items + title bar + tempbox
 #define LISTITEM_PER_PAGE 5
 #define LIVEICON_LINES    3
@@ -49,6 +49,7 @@ typedef enum
   KEY_LABEL_6,
   KEY_LABEL_7,
   KEY_TITLEBAR,
+  KEY_TEMP,
   KEY_INFOBOX,
   KEY_INCREASE = IDLE_TOUCH - 5,
   KEY_DECREASE = IDLE_TOUCH - 4,

@@ -44,9 +44,11 @@ extern "C" {
 
 #define ICON_ADDR(num)          ((num) * ICON_MAX_SIZE + CUSTOM_GCODE_ADDR + CUSTOM_GCODE_MAX_SIZE)
 #define INFOBOX_ADDR            (ICON_ADDR(ICON_PREVIEW) + ICON_MAX_SIZE)      // total byte size 0xA7F8
-#define SMALL_ICON_START_ADDR   (INFOBOX_ADDR + INFOBOX_MAX_SIZE)
+#define HOME_LOGO_ADDR          (INFOBOX_ADDR + INFOBOX_MAX_SIZE)      // total byte size 0xA7F8
+#define HOME_TEMP_ADDR          (HOME_LOGO_ADDR + INFOBOX_MAX_SIZE)      // total byte size 0xA7F8
+#define SMALL_ICON_START_ADDR   (HOME_TEMP_ADDR + INFOBOX_MAX_SIZE)
 #define SMALL_ICON_ADDR(num)    ((num) * SMALL_ICON_MAX_SIZE + SMALL_ICON_START_ADDR)
-#define FLASH_USED              (INFOBOX_ADDR + INFOBOX_MAX_SIZE)              // currently small icons are not used
+#define FLASH_USED              (HOME_TEMP_ADDR + INFOBOX_MAX_SIZE)              // currently small icons are not used
 
 #ifdef PORTRAIT_MODE
   #define STR_PORTRAIT STRINGIFY(PORTRAIT_MODE)
