@@ -51,7 +51,7 @@ static bool msgNeedRefresh = false;
 static char msgTitle[20];
 static char msgBody[MAX_MSG_LENGTH];
 
-const char *const speedID[2] = SPEED_ID;
+// const char *const speedID[2] = SPEED_ID;
 
 // text position rectangles for Live icons
 const GUI_POINT ss_title_point = {SS_ICON_WIDTH - BYTE_WIDTH / 2, SS_ICON_NAME_Y0};
@@ -134,15 +134,15 @@ void drawStatus(void)
   #else
     // TOOL / EXT
     lvIcon.iconIndex = ICON_STATUS_NOZZLE;
-    sprintf(tempstr, "%3d", heatGetCurrentTemp(currentTool));
-    lvIcon.lines[0].text = (uint8_t *)tempstr;
-    showLiveInfo(0, &lvIcon, false);
+    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(currentTool));
+    lvIcon.lines[3].text = (uint8_t *)tempstr;
+    showLiveInfo(3, &lvIcon, false);
 
     // BED
     lvIcon.iconIndex = bedIcons[currentBCIndex];
-    sprintf(tempstr, "%3d", heatGetCurrentTemp(BED + currentBCIndex));
-    lvIcon.lines[1].text = (uint8_t *)tempstr;
-    showLiveInfo(1, &lvIcon, infoSettings.chamber_en == 1);
+    sprintf(tempstr, "%3d℃", heatGetCurrentTemp(BED + currentBCIndex));
+    lvIcon.lines[3].text = (uint8_t *)tempstr;
+    showLiveInfo(3, &lvIcon, infoSettings.chamber_en == 1);
   #endif
 
   // // FAN
@@ -241,30 +241,30 @@ static inline void toggleTool(void)
   if (nextScreenUpdate(UPDATE_TOOL_TIME))
   {
     // increment hotend index
-    if (infoSettings.hotend_count > 1)
-      currentTool = (currentTool + 1) % infoSettings.hotend_count;
+    // if (infoSettings.hotend_count > 1)
+    //   currentTool = (currentTool + 1) % infoSettings.hotend_count;
 
-    // switch bed/chamber index
-    if (infoSettings.chamber_en == 1)
-      TOGGLE_BIT(currentBCIndex, 0);
+    // // switch bed/chamber index
+    // if (infoSettings.chamber_en == 1)
+    //   TOGGLE_BIT(currentBCIndex, 0);
 
     // increment fan index
-    if ((infoSettings.fan_count + infoSettings.ctrl_fan_en) > 1)
-    {
-      do
-      {
-        currentFan = (currentFan + 1) % MAX_FAN_COUNT;
-      } while (!fanIsValid(currentFan));
-    }
+    // if ((infoSettings.fan_count + infoSettings.ctrl_fan_en) > 1)
+    // {
+    //   do
+    //   {
+    //     currentFan = (currentFan + 1) % MAX_FAN_COUNT;
+    //   } while (!fanIsValid(currentFan));
+    // }
 
     // switch speed/flow
-    TOGGLE_BIT(currentSpeedID, 0);
+    // TOGGLE_BIT(currentSpeedID, 0);
     drawStatus();
 
     // gcode queries must be call after drawStatus
     coordinateQuery(MS_TO_SEC(UPDATE_TOOL_TIME));
     speedQuery();
-    ctrlFanQuery();
+    // ctrlFanQuery();
   }
 }
 
@@ -310,12 +310,12 @@ void menuStatus(void)
         break;
 
       case KEY_TEMP:
-              heatSetCurrentIndex(-1);  // set last used hotend index
+              heatSetCurrentIndex(LAST_NOZZLE);  // set last used hotend index
         OPEN_MENU(menuHeat);
       default:
         break;
     }
-
+    toggleTool();
     loopProcess();
   }
 
